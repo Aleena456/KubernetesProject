@@ -1,0 +1,9 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: autoscaler-config
+data:
+  interval: "10"
+  min_replicas: "1"
+  max_replicas: "10"

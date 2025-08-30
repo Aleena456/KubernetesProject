@@ -1,0 +1,92 @@
+Step 1: Prerequisites
+
+Make sure you have installed:
+
+Docker – for building images
+
+kind – Kubernetes in Docker (https://kind.sigs.k8s.io/
+)
+
+kubectl – Kubernetes CLI (https://kubernetes.io/docs/tasks/tools/
+)
+
+Python 3.11+ – to run evaluation scripts
+
+Step 2: Prepare the Deployment Script
+
+Open terminal and navigate to the folder where you unzipped the project.
+
+Make the deploy script executable:
+
+chmod +x kind/deploy.sh
+
+Step 3: Deploy the Local Kubernetes Cluster
+
+Run the deploy script:
+
+./kind/deploy.sh
+
+
+This script does the following automatically:
+
+Creates a local kind cluster
+
+Builds Docker images for the app, predictor, and autoscaler
+
+Loads the images into the kind cluster
+
+Applies all Kubernetes manifests (Deployments, Services, ConfigMap, Ingress)
+
+Step 4: Verify Pods and Services
+
+Check all pods are running:
+
+kubectl get pods -A
+
+
+Check services:
+
+kubectl get svc
+
+Step 5: Access Services
+
+App (demo microservice): http://localhost:30001
+
+Predictor API: use kubectl port-forward if needed
+
+kubectl port-forward svc/predictor-svc 8000:8000
+
+
+Access at http://localhost:8000/predict
+
+Autoscaler: Logs show scaling actions in real time
+
+kubectl logs deployment/autoscaler
+
+Step 6: Run Evaluation
+
+Generate predictions:
+
+python predictor/gen_predictions.py
+
+
+Run evaluation comparing reactive HPA vs predictive autoscaling:
+
+python evaluate.py
+
+
+Metrics are output to evaluation_results.csv
+
+Plots generated in plots/ folder (pods_comparison.png and latency_comparison.png)
+
+thesis/results.md is automatically updated with plots and deployment guide
+
+Step 7: Optional Monitoring
+
+If you add Prometheus/Grafana in the cluster:
+
+Set up port-forward or NodePort access
+
+Visualize pod scaling, CPU/memory usage, and predictive scaling behavior
+
+✅ That’s it! The full demo is now running locally, predictive autoscaling is active, and evaluation plots are available 

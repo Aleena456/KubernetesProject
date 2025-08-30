@@ -1,0 +1,3 @@
+# Methods
+
+Kubernetes-based predictive autoscaling framework...
